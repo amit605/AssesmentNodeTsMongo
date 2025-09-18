@@ -1,4 +1,4 @@
-# assesmentNodeTsMongo
+# AssesmentNodeTsMongo
 This is based on Node with typescript and mongo db database
 
 # For installation used the commands 
