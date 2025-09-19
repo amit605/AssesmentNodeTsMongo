@@ -14,32 +14,34 @@ export class TranscriptionController {
       const errors = await validate(dto);
 
       if (errors.length > 0) {
-        return res.status(400).json({ errors });
+        return res.status(400).json({ errors: "invalid url" });
       }
 
-      const recordFind = await service.getTranscriptionById({ "audioUrl": dto.audioUrl });
-      
+      // Validate audio file format
+      const audioExtensions = [".mp3", ".wav", ".ogg", ".aac", ".flac", ".m4a"];
+      const audioExt = audioExtensions.some(ext => dto.audioUrl.toLowerCase().endsWith(ext));
+      if (!audioExt) {
+        return res.status(201).json({ message: "Invalid file type. Only audio files are allowed (mp3, wav, ogg, etc.)" });
+      }
+
+      const recordFind = await service.getTranscriptionBydata({ "audioUrl": dto.audioUrl });
       if (recordFind) {
-        return res.status(201).json({ message: "Transcription url already exist" });
+        return res.status(201).json({ message: "Transcription url already exist. Please use another URL" });
       } else {
         const record = await service.createTranscription(dto.audioUrl);
         return res.status(201).json({ id: record._id });
       }
-      
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error" });
     }
   }
 
-  static async getById(req: Request, res: Response) {
+  static async list(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const record = await service.getTranscriptionById({ "_id": id });
-      if (!record) {
-        return res.status(404).json({ message: "Not found" });
-      }
-      return res.json(record);
+      const items = await service.listAll();
+      return res.json(items);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error" });

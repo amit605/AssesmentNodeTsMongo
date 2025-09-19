@@ -12,7 +12,11 @@ export class TranscriptionService {
     return await newTranscription.save();
   }
 
-  async getTranscriptionById(data: object): Promise<ITranscription | null> {
+  async getTranscriptionBydata(data: object): Promise<ITranscription | null> {
     return await Transcription.findOne(data);
+  }
+  
+  async listAll() {
+    return Transcription.find().sort({ createdAt: -1 }).lean();
   }
 }

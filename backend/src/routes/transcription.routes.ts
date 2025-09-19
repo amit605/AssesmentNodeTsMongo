@@ -4,6 +4,5 @@ import { TranscriptionController } from "../controllers/transcription.controller
 const router = Router();
 
 router.post("/transcription_create", TranscriptionController.create);
-router.get("/get_transcription_by_id/:id", TranscriptionController.getById);
-
+router.get('/list_all', TranscriptionController.list);
 export default router;

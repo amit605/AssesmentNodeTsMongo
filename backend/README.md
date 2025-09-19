@@ -35,5 +35,5 @@ Request Body:
   "audioUrl": "https://example.com/sample.mp3"
 }
 
-2) Get Transcription by ID
-GET /api/get_transcription_by_id/:id
+2) Get all Transcription
+GET /api/list_all
